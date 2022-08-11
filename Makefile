@@ -13,7 +13,7 @@ linkedlist:
 	@echo "			       LISTAS					     "
 	@echo "============================================="
 	@echo "compilando o exemplo de lista simplesmente encadeada"
-	gcc LinkedList.h LinkedList.c LinkedListTest.c -o linkedlist
+	gcc log.h log.c LinkedList.h LinkedList.c LinkedListTest.c -o linkedlist
 	chmod +x linkedlist
 
 clear:

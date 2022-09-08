@@ -71,16 +71,102 @@ void* top(DoublyLinkedList *list){
 bool isEmpty(DoublyLinkedList *list){
     return (list->size == 0);
 }
-int indexOf(DoublyLinkedList *list,void *data, compare equal);
-Node* getNodeByPos(DoublyLinkedList *list,int pos);
+int indexOf(DoublyLinkedList *list,void *data, compare equal){
+    int count = 0;
+    if(isEmpty(list)) return -1;
+    Node *aux = aux->first->next;
+
+    while(aux != NULL && !equal (aux->data, data)){
+        aux = aux->next;
+        count++;
+    }
+    return(aux==list->first) ?-1: count;
+}
+Node* getNodeByPos(DoublyLinkedList *list,int pos){
+    if(isEmpty(list) || pos>=list->size) return NULL;
+    Node *aux = list->first->next;
+
+    for(it count = 0; (aux!=NULL && count<pos);count++,aux=aux->next);
+
+    return aux;
+}
 void* getPos(DoublyLinkedList *list,int pos){
     int count = 0;
     if(isEmpty(list)) return -1;
+
+    Node *aux = list->first->next;
+    while(count != pos && aux->next != list->first){
+        count++;
+        aux = aux->next;
+    }
+    aux->data;
 }
-int add(DoublyLinkedList *list, int pos, void *data);
-int addAll(DoublyLinkedList *listDest, int pos, DoublyLinkedList *listSource);
-void* removePos(DoublyLinkedList *list, int pos);
-bool removeData(DoublyLinkedList *list, void *data, compare equal);
+int add(DoublyLinkedList *list, int pos, void *data){
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if(newNode == NULL) return -1;
+
+    Node *aux = getNodeByPos(list, pos);
+
+    newNode->data = data;
+
+    newNode->next= aux;
+    newNode->previous = aux->previous;
+
+    aux->previus->next = newNode;
+    aux->previous = newNode;
+
+    list->size++;
+
+    return 1;
+}
+int addAll(DoublyLinkedList *listDest, int pos, DoublyLinkedList *listSource){
+    Node *aux = getNodeByPos(list,pos);
+
+    if(aux ==NULL) return -1;
+
+    if(isEmpty(listSource)) return -2;
+
+    listSource->first->previous->next = aux;
+    listSource->first->next->previous = aux->previous;
+
+    aux->previous->next = listSource->first->next;
+    aux->previous-> listSource->first->previous;
+
+    listDest->size+=listSource->size;
+
+    return listSource->size;
+}
+void* removePos(DoublyLinkedList *list, int pos){
+    if(isEmpty(list) || pis>= list->size) return NULL;
+
+    Node *NodeRemove = getNodeByPos(list,pos);
+
+    NodeRemove->previous->next = NodeRemove->next;
+    NodeRemove->next->previous = NodeRemove->previous;
+
+    void * dataRemove = NodeRemove->data;
+    free(NodeRemove);
+    list->size--;
+
+    return dataRemove;
+}
+bool removeData(DoublyLinkedList *list, void *data, compare equal){
+     if ( isEmpty (list)) return - 1 ;
+
+    Node *nodeRemove = list->first->next;
+    while(nodeRemove!= list->first && ! equal(nodeRemove->data, data))
+        nodeRemove=nodeRemove->next;
+    if(nodeRemove != list->first){
+        nodeRemove->previous->next = nodeRemove->next;
+        nodeRemove->next->previous = nodeRemove->previous;
+        free(nodeRemove->data);
+        free(nodeRemove);
+        list->size--;
+        return 1;
+    } else{
+        return 0;
+    }
+}
 void show(DoublyLinkedList *list, printNode print){
     Node *aux = list->first->next;
     while(aux!=list->first){

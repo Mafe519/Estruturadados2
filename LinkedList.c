@@ -105,7 +105,7 @@ void* top(LinkedList *list){
 }
 
 int add(LinkedList *list, int pos, void *data){
-    int count = 0;
+    int count=0;
     Node *novoNo = (Node *)malloc(sizeof (Node) );
     if (novoNo == NULL) return -1;
 
@@ -161,7 +161,7 @@ int indexOf(LinkedList *list, void *data, compare equal){
     if(isEmpty(list)) return -1;
     Node *aux = list->first;
 
-    while(aux != NULL && ! equal (aux->data, data)) {
+    while(aux != NULL && !equal (aux->data, data)) {
         aux = aux->next;
         count++;
     }
@@ -200,7 +200,7 @@ void * removePos (LinkedList *list, int pos) {
 bool  removeData (LinkedList *list, void *data, compare equal) {
     if ( isEmpty (list)) return - 1 ;
 
-    Nde *nodeRemove = NULL ;
+    Node *nodeRemove = NULL ;
     if ( equal (list-> first -> data ,data)) {
         nodeRemove = list-> first ;
         list-> first = list-> first -> next ;

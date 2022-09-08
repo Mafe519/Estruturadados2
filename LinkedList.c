@@ -126,7 +126,7 @@ int add(LinkedList *list, int pos, void *data){
 
 void* getPos(LinkedList *list, int pos){
     int count = 0;
-    if (novoNo == NULL) return -1;
+    if (isEmpty(list)) return NULL;
 
     Node *aux = list->first;
     while(count != pos && aux->next != NULL){

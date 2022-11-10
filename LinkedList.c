@@ -3,7 +3,7 @@
 #include "LinkedList.h"
 #include "log.h"
 
-void init( LinkedList *list){
+void init( LinkedList *list) /* inicia a lista */{
     log_info("inicializando a lista");
     log_trace("entrando em init");
     list->first = NULL;
@@ -15,7 +15,7 @@ void init( LinkedList *list){
 
 }
 
-int enqueue(LinkedList *list, void *data){
+int enqueue(LinkedList *list, void *data) /*insere no final da fila */ {
     Node *novoNo = (Node *)malloc(sizeof (Node) );
     if (novoNo == NULL) return -1;
 
@@ -40,71 +40,73 @@ int enqueue(LinkedList *list, void *data){
     return 1;
 }
 
-bool isEmpty(LinkedList *list){
-        return list->first == NULL;
+bool isEmpty(LinkedList *list) /*verifica quem é o último da fila*/{
+        return (list->size==0);
 }
-void* dequeue(LinkedList *list){
+void* dequeue(LinkedList *list) /*remove do início da fila*/{
     
     if (isEmpty(list)) return NULL;
 
     Node *aux = list->first;    // auxiliar recebe o dado do primeiro nó da fila
     list->first = list->first->next;   //o primeiro da lista recebe o próximo
     void *auxdata = aux->data;  //
-    list->size--;
     free(aux);          
+    list->size--;
 
     return auxdata;
 }
 
-void* first(LinkedList *list){
+void* first(LinkedList *list) /*consulta quem é o primeiro da fila*/{
     if (isEmpty(list)) return NULL;
 
     return list->first->data;
 
     //return isEmpty(list)?NULL:list->first->data;
 }
-void* last(LinkedList *list){
+void* last(LinkedList *list) /*consulata quem é o último da fila*/{
     if (isEmpty(list)) return NULL;
 
+     void *data = NULL;
      Node *aux = list->first;    //aux recebe o primeiro da lista
 
         while(aux->next != NULL){   //enquanto não for o ultimo nó
             aux = aux->next;        //aux recebe o próximo nó
         }
+        data = aux->data;
 
-         return aux->next;       
+         return data;       
 }
  //operações para pilha
-int push(LinkedList *list, void *data){
+int push(LinkedList *list, void *data) /*insere no topo da pilha*/{
     Node *novoNo = (Node *)malloc(sizeof (Node) );
     if (novoNo == NULL) return -1;
 
     novoNo->data = data;
     novoNo->next = NULL;
 
-    if (list->first == NULL){   //se a lista estiver vazia
-        novoNo->next = NULL;
-        list->first = novoNo;   // Novo nó é o primeiro
+    if (list->first == NULL){  //se a lista estiver vazia
+        list->first = novoNo;  // Novo nó é o primeiro
 
     }
     else{
-        Node *aux = list->first;
+        novoNo->next = list->first
         list->first = novoNo;
-        list->size++;
     }
+
+     list->size++;
      return 1;
 }
-void* pop(LinkedList *list){
+void* pop(LinkedList *list) /*REMOVE DO TOPO DA PILHA*/{
 
     dequeue(list);
         
 }
 
-void* top(LinkedList *list){
+void* top(LinkedList *list) /*consulta o topo da fila*/{
     first(list);
 }
 
-int add(LinkedList *list, int pos, void *data){
+int add(LinkedList *list, int pos, void *data) /*adicina em qualquer posição*/{
     int count=0;
     Node *novoNo = (Node *)malloc(sizeof (Node) );
     if (novoNo == NULL) return -1;
@@ -124,7 +126,7 @@ int add(LinkedList *list, int pos, void *data){
         return 1;
 }
 
-void* getPos(LinkedList *list, int pos){
+void* getPos(LinkedList *list, int pos) /*busca o elemento em uma posição específica*/{
     int count = 0;
     if (isEmpty(list)) return NULL;
 
@@ -137,7 +139,7 @@ void* getPos(LinkedList *list, int pos){
     return aux->data;
 }
 
-int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
+int addAll(LinkedList *listDest, int pos, LinkedList *listSource) /*adiciona vários elementos a partir de qualquer posição*/{
     if(listDest == NULL || isEmpty(listDest)) return -1;
     if(listSource == NULL || isEmpty(listSource)) return -2;
 
@@ -156,7 +158,7 @@ int addAll(LinkedList *listDest, int pos, LinkedList *listSource){
     return listSource->size;
 }
 
-int indexOf(LinkedList *list, void *data, compare equal){
+int indexOf(LinkedList *list, void *data, compare equal) /*descobre a posição de um elemento especifico */{
     int count = 0;
     if(isEmpty(list)) return -1;
     Node *aux = list->first;
@@ -176,7 +178,7 @@ Node* getNodeByPos(LinkedList *list, int pos){
 
     return aux;
 }
-void * removePos (LinkedList *list, int pos) {
+void * removePos (LinkedList *list, int pos) /*rwmove o elemento de uma determinada posição */ {
     if ( isEmpty (list) || pos>=list-> size ) return  NULL ;
     
     Node *nodeRemove = NULL ;
@@ -197,7 +199,7 @@ void * removePos (LinkedList *list, int pos) {
     return dataRemove;
 }
 
-bool  removeData (LinkedList *list, void *data, compare equal) {
+bool  removeData (LinkedList *list, void *data, compare equal) /*remove determinado dado da lista */ {
     if ( isEmpty (list)) return - 1 ;
 
     Node *nodeRemove = NULL ;

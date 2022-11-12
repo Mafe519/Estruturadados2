@@ -125,7 +125,41 @@ int removeTreeNode(TreeNode **root, void *key, TreeComparator f){
         return 0;
     }
     int compvalue = f(key, (*root)->element);
+    if(compvalue < 0)
+        removeTreeNode(&(*root)->left, key, f);
+    else{
+        if(compvalue > 0){
+            removeTreeNode(&(*root)->right, key, f);
+        } else{
+            TreeNode *aux = *root;
+            if(((*root)->left == NULL) && ((*root)->right == NULL)){
+                free(aux);
+                (*root) == NULL;
+            } else{
+                if((*root)->left ==NULL){
+                   (*root) = (*root->right);
+                    aux->right = NULL;
+                    free(aux); aux = NULL;
+                } else{
+                    if((*root)->right == NULL){
+                        (*root) = (*root)->left;
+                        aux->left = NULL;
+                        free(aux); aux = NULL;
+                    } else{
+                        aux = greaterRight(&(*root)->left);
+                        aux->left = (*root)->left;
+                        aux->right = (*root)->right;
+                        (*root)->left = (*root)->right == NULL;
+                        free((*root)); *root = aux; aux = NULL;
+                    }
+                }
+            }
+        }
+    }
+    return 1;
 }
+
+
 
 /*
 - Calcula a altura da árvore/subárvore
@@ -138,7 +172,14 @@ int removeTreeNode(TreeNode **root, void *key, TreeComparator f){
 - - árvore com apenas um nó tem altura 0
 */
 int height (TreeNode *root){
-
+    if(root == NULL)
+        return -1
+    else{
+        int h1 = height(root->left);
+        int hr = height(root->right);
+        if(h1 < hr) return hr + 1;
+        else return h1 + 1;
+    }
 }
 
 /*
@@ -148,7 +189,11 @@ int height (TreeNode *root){
 - - root: A raiz da árvore/subárvore
 */
 void destroy (TreeNode **root){
-
+    if(*root == NULL) return;
+    destroy(&(*root)->left);
+    destroy(&(*root)->right);
+    free(*root);
+    *root = NULL;
 }
 
 #endif
